@@ -66,9 +66,9 @@ public abstract class GatewayServlet extends HttpServlet {
     /**
      * Constructor.
      */
-    public GatewayServlet() {
+    public GatewayServlet() { 
     }
-
+    
     /**
      * @see javax.servlet.http.HttpServlet#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
@@ -251,6 +251,15 @@ public abstract class GatewayServlet extends HttpServlet {
         String apiKey = request.getHeader("X-API-Key"); //$NON-NLS-1$
         if (apiKey == null || apiKey.trim().length() == 0) {
             apiKey = queryParams.get("apikey"); //$NON-NLS-1$
+        }
+        if (apiKey == null || apiKey.trim().length() == 0) {
+        	try {
+        		String token = request.getHeader("X-Token");
+        		apiKey = TokenUtils.getApiKey(token);
+        		System.out.println("ApiKey by Gennera Token: " + apiKey);
+        	} catch (Exception e) {
+        		e.printStackTrace();
+        	}
         }
         return apiKey;
     }
